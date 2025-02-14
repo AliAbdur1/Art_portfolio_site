@@ -15,7 +15,7 @@ function About () {
     ],
     cgi_software: [
       { name: 'Blender', level: 85 },
-      { name: 'Mya', level: 65 },
+      { name: 'Maya', level: 65 },
     ],
     tools: [
       'Git',
