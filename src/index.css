@@ -66,3 +66,47 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Responsive Typography */
+@media (max-width: 1024px) {
+  h1 {
+    font-size: 2.5em; /* Slightly smaller headings for tablets */
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    flex-direction: column; /* Stack items vertically on smaller screens */
+    padding: 1rem; /* Add some padding for spacing */
+  }
+
+  h1 {
+    font-size: 2em; /* Reduce heading size for mobile */
+  }
+
+  p {
+    font-size: 1em; /* Ensure text remains readable */
+  }
+
+  button {
+    font-size: 0.9em;
+    padding: 0.8em 1em; /* Make buttons easier to tap */
+  }
+}
+
+/* Mobile-specific layout adjustments */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.8em; /* Further reduce heading size */
+  }
+
+  body {
+    min-width: 100vw; /* Ensure full width */
+    padding: 0.8rem; /* Add spacing around content */
+  }
+
+  button {
+    width: 100%; /* Make buttons full width for easier tapping */
+    font-size: 1em;
+  }
+}

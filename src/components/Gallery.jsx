@@ -87,7 +87,7 @@ const Gallery = () => {
   return (
     <div className="container">
       <div className="gallery-section">
-        <h2 className="section-title">My Artwork</h2>
+        <h2 className="section-title">My work</h2>
         
         <div className="art-section">
           <h3>Game Assets</h3>
@@ -107,7 +107,7 @@ const Gallery = () => {
         slides={allSlides}
       />
 
-      <div className="gallery-section">
+      <div className="gallery-section" >
         <h2 className="section-title">Game Downloads</h2>
         <div className="download-section">
           <div className="download-info">
