@@ -22,7 +22,8 @@
 }
 
 body {
-  width: 100.3vw;
+  
+  width: 107.5vw;
   background-color: var(--bg-color);
   color: var(--text-color);
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -30,19 +31,22 @@ body {
 }
 
 .app {
+  width: 100vw;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  
 }
 
 .main-nav {
-  width: 96.5vw;
+  width: 100vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
   background-color: var(--nav-bg);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
 }
 
 .nav-brand a {
@@ -284,7 +288,7 @@ button:disabled {
   font-size: 1.5rem;
   cursor: pointer;
   padding: 0.5rem;
-  margin-left: 1rem;
+  /* margin-left: 1rem; */
   transition: transform 0.3s ease;
 }
 
@@ -313,8 +317,11 @@ button:disabled {
     flex-direction: column;
     padding: 1rem;
   }
-
+  .app {
+    width: 100vw;
+  }
   .main-nav {
+    width: 100vw;
     flex-direction: column;
     text-align: center;
     padding: 1rem;
@@ -357,6 +364,14 @@ button:disabled {
     width: 100%;
     padding: 0.75rem;
     font-size: 1rem;
+  }
+
+  .app {
+    width: 100vw;
+  }
+
+  .main-nav {
+    width: 100vw;
   }
 
   .form-group input,
