@@ -26,7 +26,7 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
-  min-width: 320px;
+  min-width: 480px; /* was 320 */
   min-height: 100vh;
 }
 
@@ -101,7 +101,7 @@ button:focus-visible {
   }
 
   body {
-    min-width: 100vw; /* Ensure full width */
+    min-width: 100.3vw; /* Ensure full width */
     padding: 0.8rem; /* Add spacing around content */
   }
 

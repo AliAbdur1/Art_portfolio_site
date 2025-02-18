@@ -48,7 +48,29 @@ const Gallery = () => {
       description: "Image asset made for a game",
       image: "/images/Hecterra.png",
       category: "Game Assets"
-    }
+    },
+    {
+      id: 7,
+      title: "Figure Drawing 2",
+      description: "Image asset made for a game",
+      image: "/images/figure_drawing_2.jpeg",
+      category: "Live session drawings"
+    },
+    {
+      id: 8,
+      title: "Figure Drawing 3",
+      description: "Image asset made for a game",
+      image: "/images/figure_drawing_3.jpeg",
+      category: "Live session drawings"
+    },
+    {
+      id: 9,
+      title: "Figure Drawing 4",
+      description: "Image asset made for a game",
+      image: "/images/figure_drawing_4.jpeg",
+      category: "Live session drawings"
+    },
+    
     // Add more artwork entries here
   ];
 
