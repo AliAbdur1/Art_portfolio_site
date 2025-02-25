@@ -389,8 +389,9 @@ button:disabled {
     font-size: 0.9rem;
   }
   .yarl__container {
-    width: 90vw;
-    height: 90vh;
+    /* this is what was needed to fix phone screen veiwing issue */
+    width: 100vw;
+    height: 100vh;
     overflow: hidden;
   }
   .yarl__slide img {
