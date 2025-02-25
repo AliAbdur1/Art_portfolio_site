@@ -24,7 +24,7 @@ const Gallery = () => {
     {
       id: 3,
       title: "figure drawing 1",
-      description: "portrait drawing of a model from alive figure drawing session",
+      description: "portrait drawing of a model from a live figure drawing session",
       image: "/images/IMG_0958.jpg",
       category: "Live session drawings"
     },
@@ -52,21 +52,21 @@ const Gallery = () => {
     {
       id: 7,
       title: "Figure Drawing 2",
-      description: "Image asset made for a game",
+      description: "figure drawing of a model from a live figure drawing session",
       image: "/images/figure_drawing_2.jpeg",
       category: "Live session drawings"
     },
     {
       id: 8,
       title: "Figure Drawing 3",
-      description: "Image asset made for a game",
+      description: "fabric focused figure drawing session",
       image: "/images/figure_drawing_3.jpeg",
       category: "Live session drawings"
     },
     {
       id: 9,
       title: "Figure Drawing 4",
-      description: "Image asset made for a game",
+      description: "cloth on legs focused figure drawing session",
       image: "/images/figure_drawing_4.jpeg",
       category: "Live session drawings"
     },
