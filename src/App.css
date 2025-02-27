@@ -22,31 +22,28 @@
 }
 
 body {
-  
-  width: 107.5vw;
+  width: 100%;
   background-color: var(--bg-color);
   color: var(--text-color);
   transition: background-color 0.3s ease, color 0.3s ease;
-  
+  overflow-x: hidden;
 }
 
 .app {
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  
 }
 
 .main-nav {
-  width: 100vw;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
   background-color: var(--nav-bg);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  
 }
 
 .nav-brand a {
@@ -131,7 +128,6 @@ main {
 
 .gallery-section {
   margin-bottom: 4rem;
-  
 }
 
 .section-title {
@@ -388,6 +384,7 @@ button:disabled {
     padding: 0.5rem;
     font-size: 0.9rem;
   }
+  /* use .yarl__'thing' to target yet another react lightbox variables */
   .yarl__container {
     /* this is what was needed to fix phone screen veiwing issue */
     width: 100vw;
