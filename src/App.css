@@ -164,7 +164,7 @@ main {
 .about h1{
   text-align: center;
   margin-bottom: 1rem;
-  /* color: var(--text-color); */
+  
 }
 
 .new-contact-form {
@@ -175,7 +175,7 @@ main {
 .new-contact-form h1 {
   text-align: center;
   margin-bottom: 1rem;
-  /* color: var(--text-color); */
+ 
 }
 
 .form-group {
