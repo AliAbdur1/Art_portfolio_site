@@ -21,12 +21,21 @@
   --progress-bar-color: linear-gradient(90deg, rgba(8,105,204,1) 0%, rgba(0,233,178,1) 50%, rgba(44,246,31,1) 100%);
 }
 
+/* Reset default margins and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   width: 100%;
   background-color: var(--bg-color);
   color: var(--text-color);
   transition: background-color 0.3s ease, color 0.3s ease;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 .app {
@@ -34,6 +43,8 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  margin: 0;
+  padding: 0;
 }
 
 .main-nav {
