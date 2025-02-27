@@ -54,7 +54,7 @@ const NewContact = () => {
     });
 
     return (
-        <div>
+        <div className="new-contact-form">
             <h1>Contact Me</h1>
             <form ref={form} onSubmit={formik.handleSubmit}>
                 <TextField
