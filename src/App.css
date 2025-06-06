@@ -411,6 +411,7 @@ button:disabled {
   /* use .yarl__'thing' to target yet another react lightbox variables */
   .yarl__container {
     /* this is what was needed to fix phone screen veiwing issue */
+    touch-action: manipulation;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
