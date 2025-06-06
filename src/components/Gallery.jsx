@@ -1,3 +1,4 @@
+import { image } from 'framer-motion/client';
 import React, { useState } from 'react';
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
@@ -70,11 +71,20 @@ const Gallery = () => {
       image: "/images/figure_drawing_4.jpeg",
       category: "Live session drawings"
     },
+    {
+      id: 10,
+      title: "Iffrit",
+      description: "Fire Jinn. inspired by FF8",
+      image: "/images/Iffrit.PNG",
+      category: "Character Illustrations"
+
+    }
     
     // Add more artwork entries here
   ];
 
   const gameAssets = artworks.filter(art => art.category === "Game Assets");
+  const characterIllustrations = artworks.filter(art => art.category === "Character Illustrations");
   const traditionalArt = artworks.filter(art => art.category === "Live session drawings");
 
   const allSlides = artworks.map(artwork => ({
@@ -119,6 +129,11 @@ const Gallery = () => {
         <div className="art-section">
           <h3>Live session drawings</h3>
           {renderArtworkGrid(traditionalArt)}
+        </div>
+
+        <div className="art-section">
+          <h3>Character Illustrations</h3>
+          {renderArtworkGrid(characterIllustrations)}
         </div>
       </div>
 
