@@ -28,6 +28,17 @@
   box-sizing: border-box;
 }
 
+/* Yet Another React Lightbox touch zoom styles */
+.yarl__slide {
+  touch-action: none;
+}
+
+.yarl__slide_image {
+  touch-action: pan-x pan-y pinch-zoom;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 body {
   width: 100%;
   background-color: var(--bg-color);
