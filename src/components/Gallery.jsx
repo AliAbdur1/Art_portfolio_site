@@ -122,6 +122,11 @@ const Gallery = () => {
         <h2 className="section-title">My work</h2>
         
         <div className="art-section">
+          <h3>Character Illustrations</h3>
+          {renderArtworkGrid(characterIllustrations)}
+        </div>
+        
+        <div className="art-section">
           <h3>Game Assets</h3>
           {renderArtworkGrid(gameAssets)}
         </div>
@@ -131,10 +136,6 @@ const Gallery = () => {
           {renderArtworkGrid(traditionalArt)}
         </div>
 
-        <div className="art-section">
-          <h3>Character Illustrations</h3>
-          {renderArtworkGrid(characterIllustrations)}
-        </div>
       </div>
 
       <Lightbox

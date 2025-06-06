@@ -97,6 +97,7 @@ main {
 }
 
 .gallery-item {
+  touch-action: auto;
   position: relative;
   overflow: hidden;
   border-radius: 8px;
