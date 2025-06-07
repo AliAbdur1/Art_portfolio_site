@@ -127,19 +127,32 @@ function renderArtworkGrid(artworks) {
 function DraggableLightboxImage({ src, alt }) {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1);
+  const lastTap = useRef(0);
 
   const bind = useGesture(
     {
-      onDrag: ({ offset: [x, y] }) => setPos({ x, y }),
-      onPinch: ({ offset: [d, a] }) => {
-        setScale(1 + d / 200); // d = distance between fingers
-      }
+      onDrag: ({ offset: [x, y] }) => setPos({ x, y })
     },
     {
-      drag: { from: () => [pos.x, pos.y] },
-      pinch: { scaleBounds: { min: 1, max: 5 }, rubberband: true }
+      drag: { from: () => [pos.x, pos.y] }
     }
   );
+
+  // Double-click (desktop)
+  const handleDoubleClick = () => {
+    setScale(prev => prev === 1 ? 2 : 1);
+    setPos({ x: 0, y: 0 });
+  };
+
+  // Double-tap (touch)
+  const handleTouchEnd = () => {
+    const now = Date.now();
+    if (now - lastTap.current < 300) {
+      setScale(prev => prev === 1 ? 6 : 1);
+      setPos({ x: 0, y: 0 });
+    }
+    lastTap.current = now;
+  };
 
   return (
     <img
@@ -150,8 +163,8 @@ function DraggableLightboxImage({ src, alt }) {
         position: 'relative',
         left: 0,
         top: 0,
-        maxWidth: '90vw',
-        maxHeight: '80vh',
+        maxWidth: '100vw',
+        maxHeight: '100vh',
         touchAction: 'none',
         cursor: scale > 1 ? 'grab' : 'zoom-in',
         userSelect: 'none',
@@ -160,9 +173,12 @@ function DraggableLightboxImage({ src, alt }) {
         transition: 'transform 0.1s cubic-bezier(.23,1.02,.59,.99)'
       }}
       draggable={false}
+      onDoubleClick={handleDoubleClick}
+      onTouchEnd={handleTouchEnd}
     />
   );
 }
+
 
 
 
