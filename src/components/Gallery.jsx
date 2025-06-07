@@ -148,34 +148,62 @@ function DraggableLightboxImage({ src, alt }) {
   const handleTouchEnd = () => {
     const now = Date.now();
     if (now - lastTap.current < 300) {
-      setScale(prev => prev === 1 ? 6 : 1);
+      setScale(prev => prev === 1 ? 3.5 : 1);
       setPos({ x: 0, y: 0 });
     }
     lastTap.current = now;
   };
 
+  const resetZoom = () => {
+    setScale(1);
+    setPos({ x: 0, y: 0 });
+  };
+
   return (
-    <img
-      src={src}
-      alt={alt}
-      {...bind()}
-      style={{
-        position: 'relative',
-        left: 0,
-        top: 0,
-        maxWidth: '100vw',
-        maxHeight: '100vh',
-        touchAction: 'none',
-        cursor: scale > 1 ? 'grab' : 'zoom-in',
-        userSelect: 'none',
-        zIndex: 10,
-        transform: `translate(${pos.x}px, ${pos.y}px) scale(${scale})`,
-        transition: 'transform 0.1s cubic-bezier(.23,1.02,.59,.99)'
-      }}
-      draggable={false}
-      onDoubleClick={handleDoubleClick}
-      onTouchEnd={handleTouchEnd}
-    />
+    <div style={{ position: 'relative', width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <img
+        src={src}
+        alt={alt}
+        {...bind()}
+        style={{
+          position: 'relative',
+          left: 0,
+          top: 0,
+          maxWidth: '100vw',
+          maxHeight: '90vh',
+          touchAction: 'none',
+          cursor: scale > 1 ? 'grab' : 'zoom-in',
+          userSelect: 'none',
+          zIndex: 10,
+          transform: `translate(${pos.x}px, ${pos.y}px) scale(${scale})`,
+          transition: 'transform 0.1s cubic-bezier(.23,1.02,.59,.99)'
+        }}
+        draggable={false}
+        onDoubleClick={handleDoubleClick}
+        onTouchEnd={handleTouchEnd}
+      />
+      {scale > 1 && (
+        <button
+          onClick={resetZoom}
+          style={{
+            position: 'absolute',
+            top: 20,
+            right: 20,
+            zIndex: 20,
+            padding: '8px 16px',
+            fontSize: '1rem',
+            borderRadius: '8px',
+            border: 'none',
+            background: 'rgba(0,0,0,0.7)',
+            color: 'white',
+            cursor: 'pointer',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+          }}
+        >
+          Reset Zoom
+        </button>
+      )}
+    </div>
   );
 }
 
