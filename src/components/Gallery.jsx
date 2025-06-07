@@ -126,11 +126,21 @@ function renderArtworkGrid(artworks) {
 // Draggable image for Lightbox slide
 function DraggableLightboxImage({ src, alt }) {
   const [pos, setPos] = useState({ x: 0, y: 0 });
-  const bind = useGesture({
-    onDrag: ({ offset: [x, y] }) => setPos({ x, y })
-  }, {
-    drag: { from: () => [pos.x, pos.y] }
-  });
+  const [scale, setScale] = useState(1);
+
+  const bind = useGesture(
+    {
+      onDrag: ({ offset: [x, y] }) => setPos({ x, y }),
+      onPinch: ({ offset: [d, a] }) => {
+        setScale(1 + d / 200); // d = distance between fingers
+      }
+    },
+    {
+      drag: { from: () => [pos.x, pos.y] },
+      pinch: { scaleBounds: { min: 1, max: 5 }, rubberband: true }
+    }
+  );
+
   return (
     <img
       src={src}
@@ -138,19 +148,22 @@ function DraggableLightboxImage({ src, alt }) {
       {...bind()}
       style={{
         position: 'relative',
-        left: pos.x,
-        top: pos.y,
+        left: 0,
+        top: 0,
         maxWidth: '90vw',
         maxHeight: '80vh',
-        touchAction: 'manipulation',
-        cursor: 'grab',
+        touchAction: 'none',
+        cursor: scale > 1 ? 'grab' : 'zoom-in',
         userSelect: 'none',
-        zIndex: 10
+        zIndex: 10,
+        transform: `translate(${pos.x}px, ${pos.y}px) scale(${scale})`,
+        transition: 'transform 0.1s cubic-bezier(.23,1.02,.59,.99)'
       }}
       draggable={false}
     />
   );
 }
+
 
 
   return (
