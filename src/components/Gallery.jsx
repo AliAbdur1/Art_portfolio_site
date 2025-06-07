@@ -159,6 +159,8 @@ function DraggableLightboxImage({ src, alt }) {
     setPos({ x: 0, y: 0 });
   };
 
+  const resetPosition = () => setPos({ x: 0, y: 0 });
+
   return (
     <div style={{ position: 'relative', width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <img
@@ -188,9 +190,9 @@ function DraggableLightboxImage({ src, alt }) {
           style={{
             position: 'absolute',
             top: 20,
-            right: 20,
+            left: 20,
             zIndex: 20,
-            padding: '8px 16px',
+            padding: '6px 12px',
             fontSize: '1rem',
             borderRadius: '8px',
             border: 'none',
@@ -200,9 +202,28 @@ function DraggableLightboxImage({ src, alt }) {
             boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
           }}
         >
-          Reset Zoom
+          Reset zoom
         </button>
       )}
+      <button
+        onClick={resetPosition}
+        style={{
+          position: 'absolute',
+          top: 60,
+          left: 20,
+          zIndex: 20,
+          padding: '6px 12px',
+          fontSize: '1rem',
+          borderRadius: '8px',
+          border: 'none',
+          background: 'rgba(0,0,0,0.7)',
+          color: 'white',
+          cursor: 'pointer',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+        }}
+      >
+        Re-center
+      </button>
     </div>
   );
 }
