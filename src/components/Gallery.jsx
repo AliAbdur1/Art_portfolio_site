@@ -1,11 +1,15 @@
 import { image } from 'framer-motion/client';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { useGesture } from '@use-gesture/react';
 import Lightbox from "yet-another-react-lightbox";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
 
 const Gallery = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
+  // Position state for each artwork (by id)
+  const [positions, setPositions] = useState({});
 
   const artworks = [
     {
@@ -93,11 +97,13 @@ const Gallery = () => {
     description: artwork.description,
   }));
 
-  const renderArtworkGrid = (artworks) => (
+  // Plain grid, no dragging
+function renderArtworkGrid(artworks) {
+  return (
     <div className="gallery-grid">
-      {artworks.map((artwork, index) => (
-        <div 
-          key={artwork.id} 
+      {artworks.map((artwork) => (
+        <div
+          key={artwork.id}
           className="gallery-item"
           onClick={() => {
             // Find the index in the full artworks array
@@ -106,7 +112,7 @@ const Gallery = () => {
             setIsOpen(true);
           }}
         >
-          <img src={artwork.image} alt={artwork.title} />
+          <img src={artwork.image} alt={artwork.title} draggable={false} />
           <div className="gallery-item-overlay">
             <h3>{artwork.title}</h3>
             <p>{artwork.description}</p>
@@ -115,6 +121,37 @@ const Gallery = () => {
       ))}
     </div>
   );
+}
+
+// Draggable image for Lightbox slide
+function DraggableLightboxImage({ src, alt }) {
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const bind = useGesture({
+    onDrag: ({ offset: [x, y] }) => setPos({ x, y })
+  }, {
+    drag: { from: () => [pos.x, pos.y] }
+  });
+  return (
+    <img
+      src={src}
+      alt={alt}
+      {...bind()}
+      style={{
+        position: 'relative',
+        left: pos.x,
+        top: pos.y,
+        maxWidth: '90vw',
+        maxHeight: '80vh',
+        touchAction: 'manipulation',
+        cursor: 'grab',
+        userSelect: 'none',
+        zIndex: 10
+      }}
+      draggable={false}
+    />
+  );
+}
+
 
   return (
     <div className="container">
@@ -143,6 +180,11 @@ const Gallery = () => {
         close={() => setIsOpen(false)}
         index={photoIndex}
         slides={allSlides}
+        render={{
+          slide: ({ slide }) => (
+            <DraggableLightboxImage src={slide.src} alt={slide.title} />
+          )
+        }}
       />
 
       <div className="gallery-section" >
