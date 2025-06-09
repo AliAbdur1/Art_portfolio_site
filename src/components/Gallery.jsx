@@ -2,7 +2,6 @@ import { image } from 'framer-motion/client';
 import React, { useState, useRef } from 'react';
 import { useGesture } from '@use-gesture/react';
 import Lightbox from "yet-another-react-lightbox";
-import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
 
 const Gallery = () => {
@@ -127,11 +126,46 @@ function renderArtworkGrid(artworks) {
 function DraggableLightboxImage({ src, alt }) {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1);
+  const [bounds, setBounds] = useState({ x: 0, y: 0 });
   const lastTap = useRef(0);
+  const imgRef = useRef(null);
+  const containerRef = useRef(null);
+
+  // Calculate bounds after image loads or scale changes
+  React.useEffect(() => {
+    const updateBounds = () => {
+      const img = imgRef.current;
+      const container = containerRef.current;
+      if (!img || !container) return;
+      const imgWidth = img.naturalWidth * scale;
+      const imgHeight = img.naturalHeight * scale;
+      const contWidth = container.offsetWidth;
+      const contHeight = container.offsetHeight;
+      // Clamp so at least edge is visible
+      const maxX = Math.max(0, (imgWidth - contWidth) / 2);
+      const maxY = Math.max(0, (imgHeight - contHeight) / 2);
+      setBounds({ x: maxX, y: maxY });
+      // Also clamp current pos if needed
+      setPos(p => ({
+        x: Math.max(-maxX, Math.min(maxX, p.x)),
+        y: Math.max(-maxY, Math.min(maxY, p.y)),
+      }));
+    };
+    updateBounds();
+    window.addEventListener('resize', updateBounds);
+    return () => window.removeEventListener('resize', updateBounds);
+  }, [scale, src]);
+
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
   const bind = useGesture(
     {
-      onDrag: ({ offset: [x, y] }) => setPos({ x, y })
+      onDrag: ({ offset: [x, y] }) => {
+        setPos({
+          x: clamp(x, -bounds.x, bounds.x),
+          y: clamp(y, -bounds.y, bounds.y)
+        });
+      }
     },
     {
       drag: { from: () => [pos.x, pos.y] }
@@ -140,7 +174,7 @@ function DraggableLightboxImage({ src, alt }) {
 
   // Double-click (desktop)
   const handleDoubleClick = () => {
-    setScale(prev => prev === 1 ? 2 : 1);
+    setScale(prev => prev === 1 ? 3.5 : 1);
     setPos({ x: 0, y: 0 });
   };
 
@@ -162,8 +196,9 @@ function DraggableLightboxImage({ src, alt }) {
   const resetPosition = () => setPos({ x: 0, y: 0 });
 
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <div ref={containerRef} style={{ position: 'relative', width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <img
+        ref={imgRef}
         src={src}
         alt={alt}
         {...bind()}
@@ -183,6 +218,19 @@ function DraggableLightboxImage({ src, alt }) {
         draggable={false}
         onDoubleClick={handleDoubleClick}
         onTouchEnd={handleTouchEnd}
+        onLoad={() => {
+          // Recalculate bounds on image load
+          const img = imgRef.current;
+          const container = containerRef.current;
+          if (!img || !container) return;
+          const imgWidth = img.naturalWidth * scale;
+          const imgHeight = img.naturalHeight * scale;
+          const contWidth = container.offsetWidth;
+          const contHeight = container.offsetHeight;
+          const maxX = Math.max(0, (imgWidth - contWidth) / 2);
+          const maxY = Math.max(0, (imgHeight - contHeight) / 2);
+          setBounds({ x: maxX, y: maxY });
+        }}
       />
       {scale > 1 && (
         <button
