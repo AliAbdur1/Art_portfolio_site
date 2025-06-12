@@ -1,5 +1,5 @@
-import { image } from 'framer-motion/client';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, animate, useSpring } from 'framer-motion';
 import { useGesture } from '@use-gesture/react';
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
@@ -137,38 +137,106 @@ function DraggableLightboxImage({ src, alt }) {
       const img = imgRef.current;
       const container = containerRef.current;
       if (!img || !container) return;
+      
+      // Calculate the scaled dimensions
       const imgWidth = img.naturalWidth * scale;
       const imgHeight = img.naturalHeight * scale;
       const contWidth = container.offsetWidth;
       const contHeight = container.offsetHeight;
-      // Clamp so at least edge is visible
+      
+      // Calculate the maximum allowed movement in each direction
       const maxX = Math.max(0, (imgWidth - contWidth) / 2);
       const maxY = Math.max(0, (imgHeight - contHeight) / 2);
+      
       setBounds({ x: maxX, y: maxY });
-      // Also clamp current pos if needed
+      
+      // Ensure current position stays within new bounds
       setPos(p => ({
-        x: Math.max(-maxX, Math.min(maxX, p.x)),
-        y: Math.max(-maxY, Math.min(maxY, p.y)),
+        x: clamp(p.x, -maxX, maxX),
+        y: clamp(p.y, -maxY, maxY)
       }));
     };
+    
     updateBounds();
-    window.addEventListener('resize', updateBounds);
-    return () => window.removeEventListener('resize', updateBounds);
+    
+    const resizeObserver = new ResizeObserver(updateBounds);
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+    
+    return () => {
+      resizeObserver.disconnect();
+    };
   }, [scale, src]);
 
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
+  const springConfig = { 
+    duration: 0.6,
+    bounce: 0.3,
+    type: "spring",
+    mass: 0.5,
+    damping: 10
+  };
+
+  const animateToCenter = () => {
+    animate(pos.x, 0, {
+      ...springConfig,
+      onUpdate: (latest) => setPos(prev => ({ ...prev, x: latest }))
+    });
+    animate(pos.y, 0, {
+      ...springConfig,
+      onUpdate: (latest) => setPos(prev => ({ ...prev, y: latest }))
+    });
+  };
+
   const bind = useGesture(
     {
-      onDrag: ({ offset: [x, y] }) => {
+      onDrag: ({ movement: [x, y], first, last, velocity: [vx, vy] }) => {
+        if (first) {
+          bind.movement = [pos.x, pos.y];
+        }
+
+        const newX = bind.movement[0] + x;
+        const newY = bind.movement[1] + y;
+        
+        // Calculate distance from center for resistance
+        const distance = Math.sqrt(newX * newX + newY * newY);
+        const resistance = Math.max(1 - distance / 1000, 0.1); // Gradually increase resistance
+        
         setPos({
-          x: clamp(x, -bounds.x, bounds.x),
-          y: clamp(y, -bounds.y, bounds.y)
+          x: newX * resistance,
+          y: newY * resistance
         });
+
+        if (last) {
+          // Add velocity-based spring animation
+          const springConfig = {
+            velocity: Math.max(Math.abs(vx), Math.abs(vy)) * resistance,
+            mass: 0.5,
+            damping: 10,
+            bounce: 0.3,
+            duration: 0.6,
+          };
+          
+          animate(pos.x, 0, {
+            ...springConfig,
+            onUpdate: (latest) => setPos(prev => ({ ...prev, x: latest }))
+          });
+          
+          animate(pos.y, 0, {
+            ...springConfig,
+            onUpdate: (latest) => setPos(prev => ({ ...prev, y: latest }))
+          });
+        }
       }
     },
     {
-      drag: { from: () => [pos.x, pos.y] }
+      drag: {
+        from: () => [pos.x, pos.y],
+        filterTaps: true,
+        rubberband: true
+      }
     }
   );
 
@@ -197,23 +265,34 @@ function DraggableLightboxImage({ src, alt }) {
 
   return (
     <div ref={containerRef} style={{ position: 'relative', width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <img
+      <motion.img
         ref={imgRef}
         src={src}
         alt={alt}
         {...bind()}
+        animate={{
+          x: pos.x,
+          y: pos.y,
+          scale: scale
+        }}
+        transition={{
+          type: "spring",
+          bounce: 0.3,
+          duration: 0.6,
+          mass: 0.5,
+          damping: 10
+        }}
         style={{
-          position: 'relative',
-          left: 0,
-          top: 0,
-          maxWidth: '100vw',
+          width: 'auto',
+          height: 'auto',
+          maxWidth: '90vw',
           maxHeight: '90vh',
           touchAction: 'none',
           cursor: scale > 1 ? 'grab' : 'zoom-in',
           userSelect: 'none',
+          pointerEvents: 'auto',
           zIndex: 10,
-          transform: `translate(${pos.x}px, ${pos.y}px) scale(${scale})`,
-          transition: 'transform 0.1s cubic-bezier(.23,1.02,.59,.99)'
+          objectFit: 'contain'
         }}
         draggable={false}
         onDoubleClick={handleDoubleClick}
