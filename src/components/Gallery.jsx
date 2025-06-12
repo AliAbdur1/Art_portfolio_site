@@ -171,70 +171,50 @@ function DraggableLightboxImage({ src, alt }) {
 
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
-  const springConfig = { 
-    duration: 0.6,
-    bounce: 0.3,
-    type: "spring",
-    mass: 0.5,
-    damping: 10
-  };
-
-  const animateToCenter = () => {
-    animate(pos.x, 0, {
-      ...springConfig,
-      onUpdate: (latest) => setPos(prev => ({ ...prev, x: latest }))
-    });
-    animate(pos.y, 0, {
-      ...springConfig,
-      onUpdate: (latest) => setPos(prev => ({ ...prev, y: latest }))
-    });
-  };
-
   const bind = useGesture(
     {
-      onDrag: ({ movement: [x, y], first, last, velocity: [vx, vy] }) => {
-        if (first) {
-          bind.movement = [pos.x, pos.y];
-        }
-
-        const newX = bind.movement[0] + x;
-        const newY = bind.movement[1] + y;
-        
-        // Calculate distance from center for resistance
-        const distance = Math.sqrt(newX * newX + newY * newY);
-        const resistance = Math.max(1 - distance / 1000, 0.1); // Gradually increase resistance
-        
-        setPos({
-          x: newX * resistance,
-          y: newY * resistance
-        });
-
-        if (last) {
-          // Add velocity-based spring animation
-          const springConfig = {
-            velocity: Math.max(Math.abs(vx), Math.abs(vy)) * resistance,
-            mass: 0.5,
-            damping: 10,
-            bounce: 0.3,
-            duration: 0.6,
-          };
-          
-          animate(pos.x, 0, {
-            ...springConfig,
-            onUpdate: (latest) => setPos(prev => ({ ...prev, x: latest }))
+      onDrag: ({ offset: [x, y], last }) => {
+        if (scale > 1) {
+          // When zoomed in, allow free movement within bounds
+          setPos({
+            x: x,
+            y: y
+          });
+        } else {
+          // When not zoomed, allow movement but return to center
+          setPos({
+            x: x,
+            y: y
           });
           
-          animate(pos.y, 0, {
-            ...springConfig,
-            onUpdate: (latest) => setPos(prev => ({ ...prev, y: latest }))
-          });
+          if (last) {
+            // Simple animation back to center when not zoomed
+            motion.animate(pos.x, 0, {
+              type: "spring",
+              duration: 0.5,
+              bounce: 0.2,
+              onUpdate: (latest) => setPos(prev => ({ ...prev, x: latest }))
+            });
+            
+            motion.animate(pos.y, 0, {
+              type: "spring",
+              duration: 0.5,
+              bounce: 0.2,
+              onUpdate: (latest) => setPos(prev => ({ ...prev, y: latest }))
+            });
+          }
         }
       }
     },
     {
       drag: {
         from: () => [pos.x, pos.y],
-        filterTaps: true,
+        bounds: scale > 1 ? {
+          left: -bounds.x,
+          right: bounds.x,
+          top: -bounds.y,
+          bottom: bounds.y
+        } : undefined,
         rubberband: true
       }
     }
