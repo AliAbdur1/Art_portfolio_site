@@ -255,12 +255,13 @@ function DraggableLightboxImage({ src, alt }) {
           y: pos.y,
           scale: scale
         }}
+        // adjust these values for better movement
         transition={{
           type: "spring",
-          bounce: 0.3,
-          duration: 0.6,
-          mass: 0.5,
-          damping: 10
+          bounce: 0.96,     // Less bounce for snappier movement
+          duration: 0.3,   // Shorter duration
+          mass: 0.28,       // Less mass for faster response
+          damping: 15      // More damping for less oscillation
         }}
         style={{
           width: 'auto',
