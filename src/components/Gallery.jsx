@@ -388,9 +388,11 @@ function DraggableLightboxImage({ src, alt }) {
             <p>A turn based card game.</p>
             <ul className="download-details">
               <li>Version: 1.0.0</li>
-              <li>Size: 65.6 MB</li>
+              <li>Size: 278.6 MB</li>
               <li>Windows Compatible <p style={{ color: 'red' }}>ONLY</p></li>
               <li>Format: ZIP Archive (Extract after downloading)</li>
+              <li>Once the zip file downloads, extract it to a location of your choice</li>
+              <li>Run the game by double clicking the Vionarch Card Game.exe file</li>
             </ul>
           </div>
           {/* v keep this up to date with the latest versions of the game v */}
