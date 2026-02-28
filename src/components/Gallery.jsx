@@ -395,12 +395,12 @@ function DraggableLightboxImage({ src, alt }) {
           </div>
           {/* v keep this up to date with the latest versions of the game v */}
           <a 
-            href={`${window.location.origin}/downloads/vionarch.zip`}
+            href={`${window.location.origin}/downloads/Vionarch Card Game.zip`}
             download
             className="download-button"
             onClick={(e) => {
               e.preventDefault();
-              window.open(`${window.location.origin}/downloads/vionarch.zip`, '_blank');
+              window.open(`${window.location.origin}/downloads/Vionarch Card Game.zip`, '_blank');
               console.log('Download started');
             }}
           >
