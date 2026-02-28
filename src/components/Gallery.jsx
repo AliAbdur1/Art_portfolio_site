@@ -12,21 +12,21 @@ const Gallery = () => {
 
   const artworks = [
     {
-      id: 1,
+      id: 10,
       title: "Green bat",
       description: "Image asset of creature made for a game",
       image: "/images/IMG_0950.png",
       category: "Game Assets"
     },
     {
-      id: 2,
+      id: 6,
       title: "Lion Hunter",
       description: "Image asset made for a game",
       image: "/images/Lion_hunter.png",
       category: "Game Assets"
     },
     {
-      id: 3,
+      id: 11,
       title: "figure drawing 1",
       description: "portrait drawing of a model from a live figure drawing session",
       image: "/images/IMG_0958.jpg",
@@ -47,11 +47,11 @@ const Gallery = () => {
       category: "Game Assets"
     },
     {
-      id: 6,
+      id: 2,
       title: "Hecterra",
       description: "Image asset made for a game",
       image: "/images/Hecterra.png",
-      category: "Game Assets"
+      category: "Character Illustrations"
     },
     {
       id: 7,
@@ -75,12 +75,19 @@ const Gallery = () => {
       category: "Live session drawings"
     },
     {
-      id: 10,
+      id: 1,
       title: "Iffrit",
       description: "Fire Jinn. inspired by FF8",
       image: "/images/Iffrit.PNG",
       category: "Character Illustrations"
 
+    },
+    {
+      id: 3,
+      title: "Storm Witch",
+      description: "Character illustration for a game",
+      image: "/images/storm_witch.PNG",
+      category: "Character Illustrations"
     }
     
     // Add more artwork entries here
@@ -255,7 +262,7 @@ function DraggableLightboxImage({ src, alt }) {
           y: pos.y,
           scale: scale
         }}
-        // adjust these values for better movement
+        // adjust these values for better movement while dragging an image
         transition={{
           type: "spring",
           bounce: 0.96,     // Less bounce for snappier movement
