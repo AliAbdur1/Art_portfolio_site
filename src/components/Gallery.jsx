@@ -84,9 +84,9 @@ const Gallery = () => {
     },
     {
       id: 3,
-      title: "Storm Witch",
+      title: "Storm sorceress",
       description: "Character illustration for a game",
-      image: "/images/storm_witch.PNG",
+      image: "/images/Ulieta.PNG",
       category: "Character Illustrations"
     }
     
