@@ -78,7 +78,7 @@ const Gallery = () => {
       id: 1,
       title: "Iffrit",
       description: "Fire Jinn. inspired by FF8",
-      image: "/images/Iffrit.PNG",
+      image: "/images/Iffrit_update.PNG",
       category: "Character Illustrations"
 
     },
